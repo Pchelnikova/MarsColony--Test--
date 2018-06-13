@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,8 +8,8 @@ using System.Threading.Tasks;
 namespace Test
 {
     class Program
-    {     
-        public static class MyRandom
+    {
+        public static class MyRandomHelper
         {
             public static Random Rand = new Random();
             public static string GetGender()
@@ -24,10 +25,30 @@ namespace Test
                         return "Female";
                 }
             }
-            public static int GetAge ()
+            public static int GetAge()
             {
                 return Rand.Next(20, 100);
             }
+            public static int GetCountOfUnits()
+            {
+                return Rand.Next(2, 8);
+            }
+            public static ICollection<Unit> GetUnits(Creator creator, Unit unit)
+            {
+                Creator _creator = creator;
+                Unit _unit = unit;
+;               ICollection<Unit> units = new ICollection<Unit.GetType()>();
+
+
+                int count = MyRandomHelper.GetCountOfUnits();
+                for (int i = 0; i < count; i++)
+                {
+                   units.Add(creator.FactoryMethod());
+                }
+                return units;
+            }
+
+
         }
         public abstract class Colony : IReduceable, IExpandable { }
         public abstract class Unit
@@ -37,37 +58,37 @@ namespace Test
             public double Productivity { get; set; }
         }
         public class Colonyst : Unit
-        {           
-            public Colonyst ()
-            {
-                Gender = MyRandom.GetGender();
-                Age = MyRandom.GetAge();                
-            }               
-        }
-        public class Miners : Colonyst
         {
-            public Miners() : base ()
+            public Colonyst()
+            {
+                Gender = MyRandomHelper.GetGender();
+                Age = MyRandomHelper.GetAge();
+            }
+        }
+        public class Miner : Colonyst
+        {
+            public Miner() : base()
             {
                 Productivity = 1;
             }
         }
         public class Builder : Colonyst
         {
-            public Builder (): base ()
+            public Builder() : base()
             {
                 Productivity = 0.8;
             }
         }
         public class Cooker : Colonyst
         {
-            public Cooker (): base ()
+            public Cooker() : base()
             {
                 Productivity = 0.5;
             }
         }
         public class Robot : Unit
         {
-            public Robot ()
+            public Robot()
             {
                 Productivity = 3;
             }
@@ -75,12 +96,23 @@ namespace Test
 
         public class MarsColony : Colony, IProductable
         {
+            Creator creator_miner = new Creator_Miner();
+            Creator creator_builder = new Creator_Builder();
+            Creator creator_cooker = new Creator_Cooker();
+            Creator creator_robot = new Creator_Robot();
+
             public string Local { get; set; }
 
             public ICollection<Unit> UnitsMars { get; set; }
-            public MarsColony ()
+
+            public MarsColony()
             {
-                Local = "Mars";
+                Local = "Mars";   
+                foreach (Unit item in MyRandomHelper.GetUnits(creator_miner, new Miner))
+                {
+                    UnitsMars.Add(item);
+                }
+               
             }
 
         }
@@ -89,15 +121,19 @@ namespace Test
         interface IReduceable { }
 
         // Factory Method Pattern
-      abstract  class Creator 
+      public  abstract class Creator
         {
-            public abstract Unit FactoryMethod();      
+
+            public abstract Unit FactoryMethod();                            
 
         }
 
         private class Creator_Miner : Creator
         {
-            public override Unit FactoryMethod() { return new Miners(); }
+
+            public override Unit FactoryMethod() { return new Miner(); }
+
+
         }
         private class Creator_Builder : Creator
         {
@@ -115,7 +151,51 @@ namespace Test
 
         static void Main(string[] args)
         {
-         
+           
+            MarsColony marsColony = new MarsColony();
+          
+            //foreach (Unit item in MyRandomHelper.GetUnits(creator_miner, new Miner()))
+            //{
+            //    marsColony.UnitsMars.Add(item);
+            //}
+            //foreach (Unit item in MyRandomHelper.GetUnits(creator_builder, new Builder()))
+            //{
+            //    marsColony.UnitsMars.Add(item);
+            //}
+            //foreach (Unit item in MyRandomHelper.GetUnits(creator_cooker, new Cooker()))
+            //{
+            //    marsColony.UnitsMars.Add(item);
+            //}
+            //foreach (Unit item in MyRandomHelper.GetUnits(creator_robot, new Robot()))
+            //{
+            //    marsColony.UnitsMars.Add(item);
+            //}
+
+            //int count = MyRandomHelper.GetCountOfUnits();
+            //for (int i = 0; i < count; i++)
+            //{
+            //    marsColony.UnitsMars.Add((creator_miner.FactoryMethod()));
+            //}
+            //count = MyRandomHelper.GetCountOfUnits();
+            //for (int i = 0; i < count; i++)
+            //{
+            //    marsColony.UnitsMars.Add(creator_builder.FactoryMethod());
+            //}
+            //count = MyRandomHelper.GetCountOfUnits();
+            //for (int i = 0; i < count; i++)
+            //{
+            //    marsColony.UnitsMars.Add(creator_cooker.FactoryMethod());
+            //}
+            //count = MyRandomHelper.GetCountOfUnits();
+            //for (int i = 0; i < count; i++)
+            //{
+            //    marsColony.UnitsMars.Add(creator_robot.FactoryMethod());
+            //}
+            foreach (Unit item in marsColony.UnitsMars)
+            {
+                Console.WriteLine(item.Gender + " " + item.Age + " " + item.Productivity);
+                Console.WriteLine();
+            }
         }
     }
 }

@@ -46,7 +46,11 @@ namespace Test
                 return units;
             }
         }
-        public abstract class Colony : IReduceable, IExpandable { }
+        interface IProductable { }
+        interface IExpandable { }
+        interface IReduceable { }
+        // Units of Colony
+        #region
         public abstract class Unit
         {
             public string Name { get; set; }
@@ -94,7 +98,11 @@ namespace Test
                 Productivity = 3;
             }
         }
+        #endregion
 
+        //Create Colony
+        #region
+        public abstract class Colony : IReduceable, IExpandable { }
         public class MarsColony : Colony, IProductable
         {
             public string Local { get; set; }
@@ -106,39 +114,17 @@ namespace Test
                 Local = "Mars";
 
                 List<Creator> creators = new List<Creator> { new Creator_Builder(), new Creator_Builder(), new Creator_Cooker(), new Creator_Robot() };
-                creators.ForEach(x => UnitsMars.AddRange(MyRandomHelper.GetUnits(x)));
-
-              // UnitsMars.AddRange(MyRandomHelper.GetUnits(new Creator_Builder()));
-              // UnitsMars.AddRange(MyRandomHelper.GetUnits(new Creator_Builder()));
-              // UnitsMars.AddRange(MyRandomHelper.GetUnits(new Creator_Cooker()));
-              // UnitsMars.AddRange(MyRandomHelper.GetUnits(new Creator_Robot()));
-
-                //foreach (Unit item in MyRandomHelper.GetUnits(new Creator_Miner()))
-                //{
-                //    UnitsMars.Add(item);
-                //}
-                //foreach (Unit item in MyRandomHelper.GetUnits(new Creator_Builder()))
-                //{
-                //    UnitsMars. Add(item);
-                //}
-                //foreach (Unit item in MyRandomHelper.GetUnits(new Creator_Cooker()))
-                //{
-                //    UnitsMars.Add(item);
-                //}
-                //foreach (Unit item in MyRandomHelper.GetUnits(new Creator_Robot()))
-                //{
-                //    UnitsMars.Add(item);
-                //}
+                creators.ForEach(x => UnitsMars.AddRange(MyRandomHelper.GetUnits(x)));            
 
             }
 
         }
-        interface IProductable { }
-        interface IExpandable { }
-        interface IReduceable { }
+        #endregion
 
         // Factory Method Pattern
-      public  abstract class Creator
+        #region
+
+        public abstract class Creator
         {
 
             public abstract Unit FactoryMethod();                            
@@ -164,7 +150,7 @@ namespace Test
         {
             public override Unit FactoryMethod() { return new Robot(); }
         }
-
+        #endregion
 
         static void Main(string[] args)
         {

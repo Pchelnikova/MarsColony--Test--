@@ -32,5 +32,6 @@ namespace Test.Mars_Colony
         {
             return marsColony.UnitsMars.Count();
         }
+        
     }
 }

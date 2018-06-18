@@ -174,9 +174,3 @@ namespace Test
 }
 
 
-//фабричний метод на створення Colonyst - Builder
-//метод додавання Count_of_Colonysts  Add_Colonyst ( I<Collect> Unit to Colony)
-//метод віднімання Count_of_Colonysts Remove_Colonysts (I<Collect> Unit from Colony)
-//int CalculateProduction (IC<Unit>, int day)
-//IC<Unit> GetColony
-//int CalcPopulation <IC<Unit>, int period
